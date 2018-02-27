@@ -3,6 +3,7 @@ package com.wcang.aidltest;
 import android.content.ComponentName;
 import android.content.Intent;
 import android.content.ServiceConnection;
+import android.os.Binder;
 import android.os.IBinder;
 import android.os.RemoteException;
 import android.support.v7.app.AppCompatActivity;
@@ -23,9 +24,13 @@ public class MainActivity extends AppCompatActivity {
             try {
                 Log.i(TAG, "onServiceConnected");
                 Log.i(TAG, "Server sum for us 5 + 6 = " + serverUtility.sum(5, 6));
+                serverUtility.deliverBinder(new Binder());
+                Thread.sleep(2000);
                 serverUtility.suicide(sepukku);
             } catch (RemoteException exc) {
                 Log.e(TAG, "Having problem invoking remote sum " + exc.getLocalizedMessage());
+            } catch (InterruptedException exc) {
+                Log.e(TAG, "Why interrupt my nap? " + exc.getLocalizedMessage() );
             }
         }
 
@@ -45,6 +50,7 @@ public class MainActivity extends AppCompatActivity {
 
     @Override
     protected void onDestroy() {
+        Log.i(TAG, "onDestroy: ");
         unbindService(serviceConnection);
         super.onDestroy();
     }

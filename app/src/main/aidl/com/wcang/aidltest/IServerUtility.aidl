@@ -11,5 +11,10 @@ interface IServerUtility {
      */
     int sum(int a, int b);
 
+    /**
+     * Pass client's binder to server
+     */
+    void deliverBinder(IBinder binder);
+
     void suicide(IDie method);
 }
